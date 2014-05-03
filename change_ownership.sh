@@ -60,8 +60,8 @@ UUCHECK=${UCHECK:-0}
 SSCHECK=${SCHECK:-0}
 if [ $UUCHECK -eq 1 ] && [ $SSCHECK -eq 1 ];
 then
-   $DUMPBIN -s -c -U postgres ${PGDATABASE} | egrep "${SCHEMAS}\..*OWNER TO"| sed -e "s/OWNER TO.*;$/OWNER TO ${NEWROLE};/" >/tmp/oc.sql
-   $DUMPBIN -s -c -U postgres ${PGDATABASE} | egrep "${SCHEMAS}\..*OWNER TO"| sed -e "s/OWNER TO.*;$/OWNER TO ${NEWROLE};/" \
+   $DUMPBIN -s -c -U $PGUSER ${PGDATABASE} | egrep "${SCHEMAS}\..*OWNER TO"| sed -e "s/OWNER TO.*;$/OWNER TO ${NEWROLE};/" >/tmp/oc.sql
+   $DUMPBIN -s -c -U $PGUSER ${PGDATABASE} | egrep "${SCHEMAS}\..*OWNER TO"| sed -e "s/OWNER TO.*;$/OWNER TO ${NEWROLE};/" \
                   | $PGSQLBIN -U postgres -d ${PGDATABASE} >>/dev/null
                      echo -e "\n Summary: "
    echo "        Tables/Sequences/Views : `grep -i "alter table" /tmp/oc.sql | wc -l`"
